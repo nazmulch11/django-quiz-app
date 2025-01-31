@@ -1,4 +1,7 @@
-{% extends 'master.html' %} {% block title %}Available Quizzes{% endblock %} {% block content %}
+{% extends 'master.html' %} 
+{% block title %}Available Quizzes{% endblock %} 
+
+{% block content %}
 <h1 class="mb-4">Available Quizzes</h1>
 
 <div class="row">
@@ -8,8 +11,12 @@
       <div class="card-body">
         <h5 class="card-title">{{ quiz.subject }}</h5>
         <p class="card-text">{{ quiz.quiz_name }}</p>
-        
- 
+        <p class="card-text">
+          <small class="text-muted">Duration: {{ quiz.time }}</small>
+        </p>
+        <a href="{% url 'quiz_detail' quiz.id %}" class="btn btn-primary"
+          >Start Quiz</a
+        >
       </div>
     </div>
   </div>

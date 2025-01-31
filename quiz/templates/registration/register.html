@@ -1,0 +1,112 @@
+{% extends 'master.html' %} 
+{% block title %}Register{% endblock %} 
+{% block content %}
+<div
+  class="row justify-content-center min-vh-100 align-items-center"
+  style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)"
+>
+  <div class="col-md-6">
+    <div class="card shadow-lg" style="border-radius: 15px; border: none">
+      <div class="card-body p-5">
+        <h2
+          class="card-title text-center mb-4"
+          style="color: #2c3e50; font-weight: 700"
+        >
+          Student Registration
+        </h2>
+
+        <form method="post">
+          {% csrf_token %} {% if form.errors %}
+          <div
+            class="alert alert-danger alert-dismissible fade show"
+            role="alert"
+          >
+            Please correct the errors below.
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+            ></button>
+          </div>
+          {% endif %}
+
+          <div class="mb-4">
+            <label for="id_username" class="form-label" style="font-weight: 600"
+              >Username</label
+            >
+            {{ form.username }} {% if form.username.errors %}
+            <div class="text-danger mt-1">{{ form.username.errors }}</div>
+            {% endif %}
+          </div>
+
+          <div class="mb-4">
+            <label
+              for="id_password1"
+              class="form-label"
+              style="font-weight: 600"
+              >Password</label
+            >
+            {{ form.password1 }} {% if form.password1.errors %}
+            <div class="text-danger mt-1">{{ form.password1.errors }}</div>
+            {% endif %}
+          </div>
+
+          <div class="mb-4">
+            <label
+              for="id_password2"
+              class="form-label"
+              style="font-weight: 600"
+              >Confirm Password</label
+            >
+            {{ form.password2 }} {% if form.password2.errors %}
+            <div class="text-danger mt-1">{{ form.password2.errors }}</div>
+            {% endif %}
+          </div>
+
+          <div class="d-grid gap-2">
+            <button
+              type="submit"
+              class="btn btn-primary btn-lg"
+              style="background: #3498db; border: none; transition: all 0.3s"
+            >
+              Register
+            </button>
+          </div>
+        </form>
+
+        <div class="text-center mt-4">
+          <p class="mb-0" style="color: #666">
+            Already have an account?
+            <a
+              href="{% url 'login' %}"
+              style="color: #3498db; text-decoration: none; font-weight: 600"
+              >Login here</a
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .form-control:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+  }
+
+  .btn-primary:hover {
+    background: #2980b9 !important;
+    transform: translateY(-1px);
+  }
+
+  .card {
+    transition: all 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+  }
+</style>
+{% endblock %}

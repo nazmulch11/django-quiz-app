@@ -1,35 +1,49 @@
-{% extends 'master.html' %} {% block title %}{{ quiz.title }}{% endblock %} {%
-block content %}
-<h1 class="mb-4">{{ quiz.title }}</h1>
-<p class="lead mb-4">{{ quiz.description }}</p>
-
-<form method="post" action="{% url 'submit_quiz' quiz.id %}">
-  {% csrf_token %} {% for question in questions %}
+{% extends 'master.html' %} 
+{% block title %}{{ quiz.quiz_name }}{% endblock %}
+{% block content %}
+<div class="container">
+  <h1 class="mb-4">{{ quiz.quiz_name }}</h1>
   <div class="card mb-4">
     <div class="card-body">
-      <h5 class="card-title">{{ forloop.counter }}. {{ question.text }}</h5>
-
-      {% for choice in question.choice_set.all %}
-      <div class="form-check mb-2">
-        <input
-          class="form-check-input"
-          type="radio"
-          name="question_{{ question.id }}"
-          id="choice_{{ choice.id }}"
-          value="{{ choice.id }}"
-          required
-        />
-        <label class="form-check-label" for="choice_{{ choice.id }}">
-          {{ choice.text }}
-        </label>
-      </div>
-      {% endfor %}
+      <h5 class="card-title">Quiz Details</h5>
+      <p class="card-text">Subject: {{ quiz.subject }}</p>
+      <p class="card-text">Duration: {{ quiz.time }}</p>
     </div>
   </div>
-  {% endfor %}
 
-  <div class="d-grid gap-2 col-6 mx-auto">
-    <button type="submit" class="btn btn-primary btn-lg">Submit Quiz</button>
-  </div>
-</form>
+  <form method="post" action="{% url 'submit_quiz' quiz.id %}">
+    {% csrf_token %} {% for question in questions %}
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title">Question {{ forloop.counter }}</h5>
+        <p class="card-text">{{ question.question }}</p>
+        <p class="text-muted">
+          Points: {{ question.points }} | Negative Points: {{
+          question.negative_points }}
+        </p>
+
+        {% for option in question.option_set.all %}
+        <div class="form-check mb-2">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="question_{{ question.id }}"
+            id="option_{{ option.id }}"
+            value="{{ option.id }}"
+            required
+          />
+          <label class="form-check-label" for="option_{{ option.id }}">
+            {{ option.option }}
+          </label>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+
+    <div class="d-grid gap-2 col-6 mx-auto mb-4">
+      <button type="submit" class="btn btn-primary btn-lg">Submit Quiz</button>
+    </div>
+  </form>
+</div>
 {% endblock %}

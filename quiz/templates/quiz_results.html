@@ -1,42 +1,60 @@
-{% extends 'master.html' %} {% block title %}Quiz Results{% endblock %} {% block
-content %}
-<h1 class="mb-4">Quiz Results</h1>
+{% extends 'master.html' %} 
+{% block title %}Quiz Results{% endblock %} 
 
-<div class="card mb-4">
-  <div class="card-body">
-    <h5 class="card-title">{{ submission.quiz.title }}</h5>
-    <p class="card-text">Your Score: {{ submission.score|floatformat:1 }}%</p>
-    <p class="text-muted">Completed on: {{ submission.submitted_at }}</p>
+{% block content %}
+<div class="container">
+  <h1 class="mb-4">Quiz Results</h1>
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="card-title">{{ result.quizset.quiz_name }}</h5>
+      <p class="card-text">Subject: {{ result.quizset.subject }}</p>
+      <p class="card-text">Total Score: {{ result.score }}</p>
+      <p class="card-text">
+        <small class="text-muted"
+          >Submitted on: {{ result.submitted_time }}</small
+        >
+      </p>
+    </div>
   </div>
-</div>
 
-{% for response in responses %}
-<div
-  class="card mb-3 {% if response.selected_choice.is_correct %}border-success{% else %}border-danger{% endif %}"
->
-  <div class="card-body">
-    <h5 class="card-title">
-      {{ forloop.counter }}. {{ response.question.text }}
-    </h5>
-    <p class="card-text">
-      Your answer: {{ response.selected_choice.text }} {% if
-      response.selected_choice.is_correct %}
-      <span class="text-success">✓ Correct</span>
-      {% else %}
-      <span class="text-danger">✗ Incorrect</span>
-      {% endif %}
-    </p>
-    {% if not response.selected_choice.is_correct %}
-    <p class="card-text text-muted">
-      Correct answer: {% for choice in response.question.choice_set.all %} {% if
-      choice.is_correct %} {{ choice.text }} {% endif %} {% endfor %}
-    </p>
-    {% endif %}
+  <h2 class="mb-3">Your Answers</h2>
+  {% for submission in submissions %}
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="card-title">Question {{ forloop.counter }}</h5>
+      <p class="card-text">{{ submission.question.question }}</p>
+
+      <div class="mb-2">
+        <strong>Your Answer:</strong>
+        <p
+          class="{% if submission.option.is_correct %}text-success{% else %}text-danger{% endif %}"
+        >
+          {{ submission.option.option }} {% if submission.option.is_correct %}
+          <span class="badge bg-success">Correct</span>
+          {% else %}
+          <span class="badge bg-danger">Incorrect</span>
+          {% endif %}
+        </p>
+      </div>
+
+      <div class="mb-2">
+        <strong>Points:</strong>
+        {% if submission.option.is_correct %}
+        <span class="text-success">+{{ submission.question.points }}</span>
+        {% else %}
+        <span class="text-danger"
+          >-{{ submission.question.negative_points }}</span
+        >
+        {% endif %}
+      </div>
+    </div>
   </div>
-</div>
-{% endfor %}
+  {% endfor %}
 
-<div class="d-grid gap-2 col-6 mx-auto mt-4">
-  <a href="{% url 'quiz_list' %}" class="btn btn-primary">Take Another Quiz</a>
+  <div class="d-grid gap-2 col-6 mx-auto mb-4">
+    <a href="{% url 'quiz_list' %}" class="btn btn-primary"
+      >Back to Quiz List</a
+    >
+  </div>
 </div>
 {% endblock %}
