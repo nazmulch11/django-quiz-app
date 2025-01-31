@@ -11,7 +11,7 @@ class Subject(models.Model):
 class QuestionSet(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     quiz_name = models.CharField(max_length=100)
-    time = models.DateTimeField()
+    time = models.TimeField()
     admin = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -22,7 +22,7 @@ class Question(models.Model):
     question = models.TextField()
     admin = models.ForeignKey(User, on_delete=models.CASCADE)
     time_to_start = models.DateTimeField()
-    duration = models.DateTimeField()
+    duration = models.IntegerField()
     points = models.IntegerField()
     negative_points = models.IntegerField()
 

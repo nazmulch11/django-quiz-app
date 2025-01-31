@@ -1,0 +1,22 @@
+{% extends 'master.html' %} {% block title %}Available Quizzes{% endblock %} {% block content %}
+<h1 class="mb-4">Available Quizzes</h1>
+
+<div class="row">
+  {% for quiz in quizzes %}
+  <div class="col-md-6 mb-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">{{ quiz.subject }}</h5>
+        <p class="card-text">{{ quiz.quiz_name }}</p>
+        
+ 
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="col-12">
+    <p class="text-center">No quizzes available at the moment.</p>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

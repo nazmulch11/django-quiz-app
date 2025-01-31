@@ -1,0 +1,42 @@
+{% extends 'master.html' %} {% block title %}Quiz Results{% endblock %} {% block
+content %}
+<h1 class="mb-4">Quiz Results</h1>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h5 class="card-title">{{ submission.quiz.title }}</h5>
+    <p class="card-text">Your Score: {{ submission.score|floatformat:1 }}%</p>
+    <p class="text-muted">Completed on: {{ submission.submitted_at }}</p>
+  </div>
+</div>
+
+{% for response in responses %}
+<div
+  class="card mb-3 {% if response.selected_choice.is_correct %}border-success{% else %}border-danger{% endif %}"
+>
+  <div class="card-body">
+    <h5 class="card-title">
+      {{ forloop.counter }}. {{ response.question.text }}
+    </h5>
+    <p class="card-text">
+      Your answer: {{ response.selected_choice.text }} {% if
+      response.selected_choice.is_correct %}
+      <span class="text-success">✓ Correct</span>
+      {% else %}
+      <span class="text-danger">✗ Incorrect</span>
+      {% endif %}
+    </p>
+    {% if not response.selected_choice.is_correct %}
+    <p class="card-text text-muted">
+      Correct answer: {% for choice in response.question.choice_set.all %} {% if
+      choice.is_correct %} {{ choice.text }} {% endif %} {% endfor %}
+    </p>
+    {% endif %}
+  </div>
+</div>
+{% endfor %}
+
+<div class="d-grid gap-2 col-6 mx-auto mt-4">
+  <a href="{% url 'quiz_list' %}" class="btn btn-primary">Take Another Quiz</a>
+</div>
+{% endblock %}

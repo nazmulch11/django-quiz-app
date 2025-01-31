@@ -1,0 +1,55 @@
+{% extends 'master.html' %} {% block title %}My Progress{% endblock %} {% block
+content %}
+<h1 class="mb-4">My Progress</h1>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h5 class="card-title">Overall Performance</h5>
+    <p class="card-text">
+      Average Score: {% if average_score %} {{ average_score|floatformat:1 }}%
+      {% else %} No quizzes taken yet {% endif %}
+    </p>
+    <p class="card-text">Total Quizzes Taken: {{ submissions|length }}</p>
+  </div>
+</div>
+
+<h2 class="mb-3">Quiz History</h2>
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Quiz</th>
+        <th>Score</th>
+        <th>Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for submission in submissions %}
+      <tr>
+        <td>{{ submission.quiz.title }}</td>
+        <td>{{ submission.score|floatformat:1 }}%</td>
+        <td>{{ submission.submitted_at|date:"M d, Y H:i" }}</td>
+        <td>
+          <a
+            href="{% url 'quiz_results' submission.id %}"
+            class="btn btn-sm btn-primary"
+            >View Results</a
+          >
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="4" class="text-center">
+          You haven't taken any quizzes yet.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="d-grid gap-2 col-6 mx-auto mt-4">
+  <a href="{% url 'quiz_list' %}" class="btn btn-primary">Take a Quiz</a>
+</div>
+{% endblock %}
